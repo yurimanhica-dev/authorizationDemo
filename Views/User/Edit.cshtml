@@ -1,0 +1,47 @@
+@using AuthorizationDemo.Models
+@model UserViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="FullName" class="form-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Roles</label>
+        <div class="form-check">
+            @for (int i = 0; i < Model.Roles.Count; i++)
+            {
+                <input type="checkbox" class="form-check-input" asp-for="Roles[i].IsSelected" />
+                <input type="hidden" asp-for="Roles[i].RoleName" />
+                <label class="form-check-label">@Model.Roles[i].RoleName</label>
+                <br />
+            }
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" class="form-control" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+        <small class="text-muted">Deixe em branco se não quiser alterar a senha</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

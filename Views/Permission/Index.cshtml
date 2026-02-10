@@ -1,0 +1,49 @@
+@using AuthorizationDemo.Helpers
+@model IEnumerable<PermissionViewModel>
+
+@{
+    ViewData["Title"] = "Permissões";
+}
+
+<h1 class="mb-3">Gestão de Permissões</h1>
+
+<p>
+    @if (User.HasPermission("Permission.Create"))
+    {
+        <a class="btn btn-primary" asp-action="Create">Create New</a>
+    }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @if (User.HasPermission("Permission.Edit"))
+                    {
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+
+                    }
+                    |
+                    @if (User.HasPermission("Permission.Delete"))
+                    {
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

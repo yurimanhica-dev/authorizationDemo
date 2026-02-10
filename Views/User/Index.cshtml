@@ -1,0 +1,55 @@
+@using System.Security.Claims
+@using AuthorizationDemo.Helpers
+@model IEnumerable<UserListViewModel>
+
+@{
+    ViewData["Title"] = "Usuários";
+}
+
+<h1 class="mb-3">Gestão de @ViewData["Title"]</h1>
+
+@if (User.HasPermission("User.Create"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
+}
+
+<table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.FullName</td>
+            <td>@item.Email</td>
+            <td>
+                @(item.Roles.Any()
+                    ? string.Join(", ", item.Roles)
+                    : "—")
+                </td>
+                <td>
+                    @if (User.HasPermission("User.Edit"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                    }      
+                    |         
+                        @if (User.HasPermission("User.Delete"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Deseja realmente excluir este usuário?');">
+                            Delete
+                        </a>
+                    }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

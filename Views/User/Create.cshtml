@@ -1,0 +1,43 @@
+@using AuthorizationDemo.Models
+@model UserViewModel
+
+<h2>Criar Usuário</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label>Nome Completo</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Password</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <h5>Roles</h5>
+    @for (int i = 0; i < Model.Roles.Count; i++)
+    {
+        <div class="form-check">
+            <input asp-for="Roles[i].IsSelected" class="form-check-input" />
+            <label class="form-check-label">@Model.Roles[i].RoleName</label>
+            <input type="hidden" asp-for="Roles[i].RoleName" />
+        </div>
+    }
+
+    @if (User.HasClaim("permission", "User.Create"))
+    {
+        <button type="submit" class="btn btn-primary mt-3">Criar Usuário</button>
+    }
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

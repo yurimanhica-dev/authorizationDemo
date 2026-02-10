@@ -1,0 +1,21 @@
+@model PermissionViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label>Nome da Permissão</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Descrição</label>
+        <input asp-for="Description" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+</form>

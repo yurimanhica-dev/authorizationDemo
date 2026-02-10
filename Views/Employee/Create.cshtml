@@ -1,0 +1,27 @@
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label class="form-label">Nome do Funcionário</label>
+        <input class="form-control" />
+        <span class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Cargo</label>
+        <input class="form-control" />
+        <span class="text-danger"></span>
+    </div>
+
+    @if ((await AuthorizationService.AuthorizeAsync(User, "Employee.Create")).Succeeded)
+    {
+        <button type="submit" class="btn btn-primary">Adicionar Funcionário</button>
+    }
+</form>

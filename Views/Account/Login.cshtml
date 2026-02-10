@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Login" method="post">
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="admin@gmail.com" name="email" required />
+        
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Admin@123" name="password" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

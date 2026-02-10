@@ -1,0 +1,13 @@
+@{
+    ViewData["Title"] = "Acesso Negado";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="alert alert-danger">
+    Você não tem permissão para acessar esta página.
+</div>
+
+<p>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Voltar para a página inicial</a>
+</p>
