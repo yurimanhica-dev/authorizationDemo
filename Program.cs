@@ -7,11 +7,17 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Banco de Dados SQL Server
+// builder.Services.AddDbContext<AppDbContext>(options =>
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+//             .EnableSensitiveDataLogging()
+//             .LogTo(Console.WriteLine));
+
+// Banco de Dados Postgres
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
             .EnableSensitiveDataLogging()
             .LogTo(Console.WriteLine));
-
 // Identity com ApplicationUser
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -22,23 +28,16 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddAuthorization(options =>
-{
-    var permissions = builder.Services.BuildServiceProvider().GetRequiredService<AppDbContext>()
-    .Permissions.ToList();
+builder.Services.AddAuthorization();
 
-    foreach (var perm in permissions)
-    {
-        options.AddPolicy(perm.Name, policy =>
-            policy.RequireClaim("Permission", perm.Name));
-    }
-});
-
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 // Authorization
 builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Lax;
     options.LoginPath = "/Account/Login";
     options.AccessDeniedPath = "/Account/AccessDenied";
     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
@@ -48,24 +47,6 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
-
-#region SeedData
-// // Carregar policies dinamicamente
-// using (var scope = app.Services.CreateScope())
-// {
-//     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-//     var permissions = db.Permissions.ToList();
-
-//     var authOptions = scope.ServiceProvider.GetRequiredService<IOptions<AuthorizationOptions>>().Value;
-
-//     foreach (var p in permissions)
-//     {
-//         authOptions.AddPolicy(p.Name, policy =>
-//             policy.RequireClaim("Permission", p.Name));
-//     }
-// }
-
-#endregion
 
 // Pipeline
 if (!app.Environment.IsDevelopment())
@@ -83,9 +64,17 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Run($"http://0.0.0.0:{port}");

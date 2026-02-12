@@ -98,7 +98,6 @@ public class RoleController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-
     [Authorize(Policy = "Role.Delete")]
     public async Task<IActionResult> Delete(string id)
     {

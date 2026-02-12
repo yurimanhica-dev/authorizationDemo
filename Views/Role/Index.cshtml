@@ -37,7 +37,6 @@
                     {
                         <a class="btn btn-warning" asp-controller="Role" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
                     }
-                    |
                     @if (User.HasPermission("Role.Delete"))
                     {
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>

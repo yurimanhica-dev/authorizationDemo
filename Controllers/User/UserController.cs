@@ -36,7 +36,7 @@ public class UserController : Controller
             {
                 Id = user.Id,
                 FullName = user.FullName,
-                Email = user.Email,
+                Email = user.Email!,
                 Roles = await _userManager.GetRolesAsync(user)
             });
         }
@@ -189,7 +189,7 @@ public class UserController : Controller
         {
             Id = user.Id,
             FullName = user.FullName,
-            Email = user.Email,
+            Email = user.Email!,
             Roles = roles
                 .Select(r => new RoleItem
                 {

@@ -7,10 +7,18 @@ namespace AuthorizationDemo.Controllers
         [Route("Error/{statusCode}")]
         public IActionResult HandleError(int statusCode)
         {
+            bool isAuthenticated = User?.Identity?.IsAuthenticated ?? false;
+
             return statusCode switch
             {
-                404 => View("NotFoundPage"),
-                403 => RedirectToAction("AccessDenied", "Account"),
+                404 => isAuthenticated
+                    ? View("NotFoundPage")
+                    : RedirectToAction("Login", "Account"),
+
+                403 => isAuthenticated
+                    ? View("AccessDenied")
+                    : RedirectToAction("Login", "Account"),
+
                 _ => View("GenericError")
             };
         }

@@ -15,7 +15,7 @@ namespace AuthorizationDemo.Controllers
             _context = context;
         }
 
-        // [Authorize(Policy = "Permission.Index")]
+        [Authorize(Policy = "Permission.Index")]
         public IActionResult Index()
         {
             var permissions = _context.Permissions.ToList();
@@ -59,7 +59,7 @@ namespace AuthorizationDemo.Controllers
             return RedirectToAction("Index");
         }
 
-        // [Authorize(Policy = "Permission.Edit")]
+        [Authorize(Policy = "Permission.Edit")]
         // GET: Edit
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
