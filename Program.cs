@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Banco de Dados Postgres
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresDatabaseConnection"))
             .EnableSensitiveDataLogging()
             .LogTo(Console.WriteLine));
 // Identity com ApplicationUser
