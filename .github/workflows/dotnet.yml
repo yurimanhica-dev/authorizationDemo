@@ -1,38 +1,38 @@
 name: Build Develop
 
 on:
-    push:
-        branches: ["main"]
+  push:
+    branches: ["main"]
 
 jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: Setup .NET
-              uses: actions/setup-dotnet@v4
-              with:
-                  dotnet-version: 9.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
 
-            - name: Cache NuGet packages
-                          uses: actions/cache@v4
-                          with:
-                              path: ~/.nuget/packages
-                              key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-                              restore-keys: |
-                                  ${{ runner.os }}-nuget-
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
-            - name: Restore dependencies
-              run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-            - name: Build
-              run: dotnet build --no-restore
+      - name: Build
+        run: dotnet build --no-restore
 
-            - name: Test
-              run: dotnet test --no-build --verbosity normal
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
 
-            - name: Check code formatting
-              run: dotnet format authorizationDemo.sln --verify-no-changes --verbosity diagnostic
+      - name: Check code formatting
+        run: dotnet format authorizationDemo.sln --verify-no-changes --verbosity diagnostic
