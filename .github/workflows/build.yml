@@ -26,13 +26,17 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
+        working-directory: ./authorizationDemo
         run: dotnet restore
 
       - name: Build
+        working-directory: ./authorizationDemo
         run: dotnet build --no-restore
 
       - name: Test
+        working-directory: ./authorizationDemo
         run: dotnet test --no-build --verbosity normal
 
       - name: Check code formatting
+        working-directory: ./authorizationDemo
         run: dotnet format authorizationDemo.sln --verify-no-changes --verbosity diagnostic
