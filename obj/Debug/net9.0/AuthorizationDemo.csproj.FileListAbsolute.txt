@@ -220,3 +220,5 @@ Y:\dev\.NET\MVC\AuthorizationDemo\obj\Debug\net9.0\compressed\3rzqu0e92e-mlv21k5
 Y:\dev\.NET\MVC\AuthorizationDemo\obj\Debug\net9.0\compressed\7vizttouxj-6b93nyvhv0.gz
 Y:\dev\.NET\MVC\AuthorizationDemo\obj\Debug\net9.0\compressed\e02rugle7k-6b93nyvhv0.gz
 Y:\dev\.NET\MVC\AuthorizationDemo\obj\Debug\net9.0\Authoriz.E5C3156D.Up2Date
+Y:\dev\.NET\MVC\AuthorizationDemo\bin\Debug\net9.0\Npgsql.dll
+Y:\dev\.NET\MVC\AuthorizationDemo\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
